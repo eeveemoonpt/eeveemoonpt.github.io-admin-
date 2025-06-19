@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sorteio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #2D3748;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      padding: min(2.5rem, 5vw);
+      border-radius: clamp(12px, 3vw, 16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      width: min(90%, 400px);
+      margin: 1rem;
+    }
+    h1 {
+      color: #4A5568;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .number {
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      font-weight: 600;
+      color: #4C51BF;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease-out;
+    }
+    .instruction {
+      color: #718096;
+      line-height: 1.6;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: #F7FAFC;
+      border-radius: 8px;
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
+    }
+    .loader {
+      width: clamp(32px, 8vw, 48px);
+      height: clamp(32px, 8vw, 48px);
+      border: clamp(3px, 1vw, 5px) solid #FFF;
+      border-bottom-color: #4C51BF;
+    }
+    @media (max-width: 380px) {
+      body { padding: 0.5rem; }
+      .container { 
+        margin: 0.5rem;
+        width: calc(100% - 2rem);
+        padding: 1.2rem;
+        border-radius: 12px;
+      }
+      .instruction {
+        padding: 0.6rem;
+        margin-top: 0.8rem;
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes rotation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Número da Sorte</h1>
+    <p>Seu número exclusivo é:</p>
+    <div class="number" id="number">
+      <span class="loader"></span>
+    </div>
+    <p class="instruction">📸 Capture uma foto desta tela com seu número para participar do sorteio.</p>
+  </div>
+
+  <script>
+    const API_URL = 'https://localhost:5000/api/config/getNumber';
+    // const API_URL = 'https://engimatrix-engibots.com/demo/api/config/getNumber';
+    console.log('Iniciando chamada para:', API_URL);
+
+    function updateNumber(number) {
+      const numberElement = document.getElementById('number');
+      numberElement.innerHTML = '';
+      numberElement.textContent = number;
+    }
+
+    // Tentar com proxy CORS
+    
+    
+    fetch(API_URL, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'client-lang': 'pt',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Resposta:', data);
+      if (data && data.number) {
+        updateNumber(data.number);
+      }
+    })
+    .catch(error => {
+      console.error('Erro:', error);
+      updateNumber('Erro ao obter número');
+    });
+  </script>
+</body>
+</html>
