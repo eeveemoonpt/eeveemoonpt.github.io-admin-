@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sorteio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Admin - Registos do Sorteio</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -15,118 +12,170 @@
       color: #2D3748;
       min-height: 100vh;
       margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 0;
-      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      padding: min(2.5rem, 5vw);
-      border-radius: clamp(12px, 3vw, 16px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      width: min(90%, 400px);
-      margin: 1rem;
+    .admin-container {
+      background: rgba(255,255,255,0.97);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+      margin-top: 2.5rem;
+      padding: 2rem 1.5rem 2.5rem 1.5rem;
+      width: min(95vw, 600px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin:  auto 5vw;
     }
-    h1 {
-      color: #4A5568;
-      font-size: clamp(1.5rem, 5vw, 2rem);
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-    .number {
-      font-size: clamp(2.5rem, 8vw, 3.5rem);
-      font-weight: 600;
+    .last-label {
       color: #4C51BF;
-      margin: 1rem 0;
-      padding: 0.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-      animation: fadeIn 0.5s ease-out;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      letter-spacing: 1px;
+      text-align: center;
     }
-    .instruction {
-      color: #718096;
-      line-height: 1.6;
+    .last-number {
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: #4C51BF;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 8px rgba(76,81,191,0.10);
+      border: 3px solid #4C51BF;
+      border-radius: 12px;
+      padding: 0.4em 1.2em;
+      background: #f7fafc;
+      display: inline-block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
       margin-top: 1rem;
-      padding: 0.8rem;
-      background: #F7FAFC;
-      border-radius: 8px;
-      font-size: clamp(0.8rem, 3vw, 0.9rem);
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(76,81,191,0.07);
     }
-    .loader {
-      width: clamp(32px, 8vw, 48px);
-      height: clamp(32px, 8vw, 48px);
-      border: clamp(3px, 1vw, 5px) solid #FFF;
-      border-bottom-color: #4C51BF;
+    th, td {
+      padding: 0.8em 0.5em;
+      text-align: center;
     }
-    @media (max-width: 380px) {
-      body { padding: 0.5rem; }
-      .container { 
-        margin: 0.5rem;
-        width: calc(100% - 2rem);
-        padding: 1.2rem;
-        border-radius: 12px;
+    th {
+      background: #4C51BF;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+    }
+    tr:nth-child(even) {
+      background: #f7fafc;
+    }
+    tr:nth-child(odd) {
+      background: #e9eafc;
+    }
+    .page-title {
+      color: white;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      margin: auto;
+      text-align: center;
+    } 
+    @media (max-width: 600px) {
+      .admin-container {
+        width: 98vw;
+        padding: 1rem 0.2rem 1.5rem 0.2rem;
+        margin: auto 5%;
       }
-      .instruction {
-        padding: 0.6rem;
-        margin-top: 0.8rem;
+      .last-number {
+        font-size: 2.1rem;
+        padding: 0.3em 0.7em;
       }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes rotation {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      .last-label {
+        font-size: 1em;
+      }
+      th, td {
+        padding: 0.5em 0.2em;
+        font-size: 0.97em;
+      }
+       .page-title {
+        margin-bottom: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Número da Sorte</h1>
-    <p>Seu número exclusivo é:</p>
-    <div class="number" id="number">
-      <span class="loader"></span>
-    </div>
-    <p class="instruction">📸 Capture uma foto desta tela com seu número para participar do sorteio.</p>
+  <div class="admin-container">
+    <div class="last-label">Último número inscrito</div>
+    <br>
+    <div id="last-number" class="last-number">--</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Hora</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Registos serão inseridos aqui -->
+      </tbody>
+    </table>
   </div>
-
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
-    const API_URL = 'https://localhost:5000/api/config/getNumber';
-    // const API_URL = 'https://engimatrix-engibots.com/demo/api/config/getNumber';
-    console.log('Iniciando chamada para:', API_URL);
+    // Altere a URL conforme necessário
+    const API_URL = 'https://engimatrix-engibots.com/demo/api/config/GetLastNumber';
 
-    function updateNumber(number) {
-      const numberElement = document.getElementById('number');
-      numberElement.innerHTML = '';
-      numberElement.textContent = number;
+    function renderTable(data) {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      if (Array.isArray(data) && data.length > 0) {
+        // Mostra o último número em destaque
+        document.getElementById('last-number').textContent = data[0]["0"];
+        data.forEach(reg => {
+          const tr = document.createElement('tr');
+          const tdNumero = document.createElement('td');
+          const tdHora = document.createElement('td');
+          tdNumero.textContent = reg["0"] || '--';
+          tdHora.textContent = reg["1"] || '--';
+          tr.appendChild(tdNumero);
+          tr.appendChild(tdHora);
+          tbody.appendChild(tr);
+        });
+      } else {
+        document.getElementById('last-number').textContent = '--';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 2;
+        td.textContent = 'Nenhum registo encontrado.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      }
     }
 
-    // Tentar com proxy CORS
-    
-    
-    fetch(API_URL, {
+    // Chamada AJAX para buscar os dados
+    $.ajax({
+      url: API_URL,
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'client-lang': 'pt',
-        'X-Requested-With': 'XMLHttpRequest'
+        'Accept': 'application/json'
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Resposta:', data);
-      if (data && data.number) {
-        updateNumber(data.number);
+    .done(function(response) {
+      // Para o formato {"out_data": [...], ...}
+      let data = [];
+      if (response && Array.isArray(response.out_data)) {
+        data = response.out_data;
       }
+      renderTable(data);
     })
-    .catch(error => {
-      console.error('Erro:', error);
-      updateNumber('Erro ao obter número');
+    .fail(function() {
+      document.getElementById('last-number').textContent = '--';
+      document.getElementById('table-body').innerHTML = '<tr><td colspan="2">Erro ao carregar registos.</td></tr>';
     });
   </script>
 </body>
